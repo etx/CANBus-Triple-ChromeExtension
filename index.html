@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html ng-app="canbusApp", ng-controller="AppCtrl" data-ng-csp>
+  <head>
+    <title>CANBus Triple</title>
+    <script src="js/lib/jquery-1.7.min.js"></script>
+    <script src="js/lib/jquery.color.js"></script>
+    <script src="js/lib/jquery.tablesorter.min.js"></script>
+    <script src="js/lib/angular.min.js"></script>
+    <script src="js/lib/bootstrap.min.js"></script>
+    <script src="js/logger.js"></script>
+    <script src="js/filters.js"></script>
+    <script src="js/directives.js"></script>
+    <script src="js/services.js"></script>
+    <script src="js/controllers.js"></script>
+    <script src="js/app.js"></script>
+    <link rel="stylesheet" href="type/exo/stylesheet.css"/>
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="css/font-awesome.min.css"/>
+    <!--
+    <link rel="stylesheet" href="css/bootstrap-responsive.min.css"/>
+    -->
+    <link rel="stylesheet" href="css/style.css"/>
+  </head>
+  <body id="page-{{pagename() || 'logger'}}">
+    <div class="navbar">
+      <div class="navbar-inner">
+        <a class="brand" href="/"></a>
+        <ul class="nav">
+          <li ng-class="{active: currentPath() == '/'}">
+            <a href="#" target="_blank" ng-click="navigate('/logger')">Logger</a>
+          </li>
+          <li ng-class="{active: currentPath() == '/diag'}">
+            <a href="#" target="_blank" ng-click="navigate('/diag')">Diagnostics</a>
+          </li>
+          <li ng-class="{active: currentPath() == '/settings'}">
+            <a href="#" target="_blank" ng-click="navigate('/settings')">Settings</a>
+          </li>
+        </ul>
+        
+        <!--<button class="btn pull-right" ng-click="loadPorts()"><i class="icon-repeat"></i></button>-->
+        <button class="btn pull-right fontawesome" ng-click="portToggle()" ng-class="{'btn-success': !portOpen, 'btn-danger': portOpen}">&#xf01e;</button>
+        <div class="btn-group pull-right port-select">
+          <button class="btn btn-warning" data-toggle="dropdown">{{ selectedPort || "Select Serial Port"}}</button>
+          <button class="btn dropdown-toggle btn-warning" data-toggle="dropdown" ng-click="loadPorts()">
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu">
+            <li ng-repeat="p in ports">
+              <a ng-click="setPort(p)">{{p}}</a>
+            </li>
+          </ul>
+        </div>
+        
+      </div>
+    </div>
+    
+    <div class="container">
+      <!--
+      <button class="btn" ng-click="testButton()">Button</button>
+      -->
+      <div ng-controller="IndexCtrl" ng-view></div>
+    </div>
+    
+  </body>
+</html>

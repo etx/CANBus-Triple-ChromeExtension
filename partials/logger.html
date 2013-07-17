@@ -1,0 +1,31 @@
+<div class="container" id="logger">
+  <table id="main-grid" logger>
+    <thead>
+      <tr id="header">
+        <th>Channel</th>
+        <th>Status</th>
+        <th>Length</th>
+        <th>Message ID</th>
+        <th>Byte 0</th>
+        <th>Byte 1</th>
+        <th>Byte 2</th>
+        <th>Byte 3</th>
+        <th>Byte 4</th>
+        <th>Byte 5</th>
+        <th>Byte 6</th>
+        <th>Byte 7</th>
+        <th>String</th>
+        <tbody></tbody>
+      </tr>
+    </thead>
+  </table>
+  
+  <div class="bus-status clearfix">
+  </div>
+  
+  <div id="send-hex">
+    <small>Send Hex</small>
+    <input id="sendString", type="text", placeholder="Input Hex"/>
+    <button value="Send", ng-click="sendString()", class="btn">Send</button>
+  </div>
+</div>

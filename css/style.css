@@ -1,0 +1,101 @@
+html, body {
+  /* background: linear-gradient(to bottom, rgba(51,51,51,1) 1%,rgba(54,54,54,1) 100%); */
+  background: #333;
+	margin: 0;
+	padding: 0;
+	font-family: 'ExoMedium', 'Arial', sans-serif;
+	color: #aaa;
+	height: 100%;
+	width: 100%;
+	overflow: visible;
+}
+
+.fontawesome {
+  font-family: "FontAwesome";
+}
+
+* { box-sizing: border-box }
+
+table {
+	margin: 0 auto;
+	width: 98%;
+	border-spacing: 1px;
+	font-size: 11px;
+}
+
+th {
+	color: #caa;
+}
+
+td, th {
+	background-color: #444;
+	padding: 6px;
+}
+
+th, td{
+	text-align: left;
+}
+
+a.brand {
+  padding-left: 52px !important;
+  background: transparent url(../img/logo.png) no-repeat 6px center;
+  background-size: contain;
+  display: inline-block;
+  min-height: 46px;
+  min-width: 46px;
+}
+
+.navbar .nav>li>a {
+  text-transform: uppercase;
+  padding-top: 14px !important;
+}
+
+.navbar-inner {
+  padding: 6px;
+  border-radius: 0;
+  margin-top: -1px;
+}
+
+.navbar .brand {
+  margin: 0;
+}
+.container {
+
+}
+
+.port-select {
+  margin-right: 8px;
+}
+
+#send-hex {
+  display: inline-block;
+  background-color: #383838;
+  border-radius: 5px;
+  padding: 12px 26px;
+  margin: 10px 0 10px 10px;
+}
+
+.bus {
+  display: inline-block;
+  background-color: #383838;
+  border-radius: 5px;
+  padding: 12px 26px;
+  margin: 10px 0 10px 10px;
+}
+
+.bus .led {
+  display: block;
+  background-color: black;
+  height: 16px;
+  width: 16px;
+  font-size: 10px;
+  color: white;
+  border-radius: 2px;
+  margin: 0 4px 4px 0;
+  vertical-align: middle;
+  text-align: center;
+}
+
+.bus .led.on {
+  background-color: red;
+}
