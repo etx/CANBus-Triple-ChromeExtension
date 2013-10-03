@@ -63,6 +63,25 @@ a.brand {
 
 }
 
+.port-select .alert {
+  position: absolute;
+  font-size: 22px;
+  max-width: 100%;
+}
+
+
+.alert {
+  margin-top: 4px;
+  padding-top: 18px;
+  opacity: 0;
+  -webkit-transition: opacity 0.25s, -webkit-transform 2s;
+  transition: opacity 0.25s, -webkit-transform 2s;
+}
+
+.alert.in {
+  opacity: 1;
+}
+
 .port-select {
   margin-right: 8px;
 }

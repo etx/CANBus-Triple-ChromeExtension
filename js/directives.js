@@ -9,7 +9,7 @@ angular.module('canbusApp.directives', []).
       elm.text(version);
     };
   }]).
-  directive('logger', [function() {
+  directive('logger', [function(){
     
     return {
       restrict: 'A',
@@ -17,7 +17,12 @@ angular.module('canbusApp.directives', []).
         
         var logger = new Logger(elem);
         
-        document.addEventListener("serialData", function(event){
+        $scope.$on('cbt-packet', function(event, data){
+          logger.handleSerial( data );
+        });
+        
+        /*
+document.addEventListener("serialData", function(event){
           logger.handleSerial( event.detail );
         },false);
         
@@ -25,6 +30,7 @@ angular.module('canbusApp.directives', []).
                                     console.log('Cleanup logger listeners');
                                     document.removeEventListener("serialData");
                                     });  
+*/
         
       }
     }

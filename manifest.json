@@ -9,7 +9,6 @@
   },
   "icons": { "16": "cbt-16.png", "128": "cbt-128.png" },
   "permissions": [
-    "usb",
     "serial"
   ]
 }

@@ -13,12 +13,10 @@
     <script src="js/services.js"></script>
     <script src="js/controllers.js"></script>
     <script src="js/app.js"></script>
+    <script src="js/lib/angular-flash.min.js"></script>
     <link rel="stylesheet" href="type/exo/stylesheet.css"/>
     <link rel="stylesheet" href="css/bootstrap.min.css"/>
     <link rel="stylesheet" href="css/font-awesome.min.css"/>
-    <!--
-    <link rel="stylesheet" href="css/bootstrap-responsive.min.css"/>
-    -->
     <link rel="stylesheet" href="css/style.css"/>
   </head>
   <body id="page-{{pagename() || 'logger'}}">
@@ -38,10 +36,10 @@
         </ul>
         
         <!--<button class="btn pull-right" ng-click="loadPorts()"><i class="icon-repeat"></i></button>-->
-        <button class="btn pull-right fontawesome" ng-click="portToggle()" ng-class="{'btn-success': !portOpen, 'btn-danger': portOpen}">&#xf01e;</button>
         <div class="btn-group pull-right port-select">
-          <button class="btn btn-warning" data-toggle="dropdown">{{ selectedPort || "Select Serial Port"}}</button>
-          <button class="btn dropdown-toggle btn-warning" data-toggle="dropdown" ng-click="loadPorts()">
+          <button id="connect-button" class="btn fontawesome" ng-click="portToggle()" ng-class="{'btn-danger': !portOpen, 'btn-success': portOpen}"><i class="icon-off"></i>&nbsp&nbsp{{ portOpen ? "Connected" : "Disconnected" }}</button>
+          <button class="btn" data-toggle="dropdown" ng-disabled="portOpen">{{ selectedPort || "Select Serial Port"}}</button>
+          <button class="btn dropdown-toggle" data-toggle="dropdown" ng-click="loadPorts()" ng-disabled="portOpen">
             <span class="caret"></span>
           </button>
           <ul class="dropdown-menu">
@@ -49,11 +47,15 @@
               <a ng-click="setPort(p)">{{p}}</a>
             </li>
           </ul>
+          <div flash-alert active-class="in" class="alert fade">
+            <span class="alert-message">
+              <p>{{flash.message}}</p>
+            </span>
+          </div>
         </div>
         
       </div>
     </div>
-    
     <div class="container">
       <!--
       <button class="btn" ng-click="testButton()">Button</button>

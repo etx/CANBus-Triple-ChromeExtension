@@ -13,26 +13,17 @@ function Logger( g ){
   
   }
   
-Logger.prototype.handleSerial = function(message) {
-	
-	// console.log(message);
-	
-	try{
-    var obj = jQuery.parseJSON( message );
-    }catch(e){
-      console.log(message);
-      throw e;
-    }
+Logger.prototype.handleSerial = function(packet) {
   
-  // Message object?
-  if( obj.id ){
+    // Message object?
+  if( packet.id ){
     
-    if( this.grid.find('#msg'+obj.id).length ){
+    if( this.grid.find('#msg'+packet.id).length ){
       
-      var row = this.grid.find('#msg'+obj.id);
+      var row = this.grid.find('#msg'+packet.id);
       var changed = false;
       
-      $.each(obj.payload, function(i, v){
+      $.each(packet.payload, function(i, v){
       	var cell = row.find('.b'+i);
       	if( cell.html() != v ){
         	  changed = true;
@@ -42,31 +33,31 @@ Logger.prototype.handleSerial = function(message) {
         }
       });
       
-      if( row.find('.buschannel').html() != obj.channel ){
-        row.find('.buschannel').html(obj.channel)
+      if( row.find('.buschannel').html() != packet.channel ){
+        row.find('.buschannel').html(packet.channel)
         		.css({backgroundColor:'pink'})
           	.animate({ backgroundColor:'#444' }, 1000);;
       }
       
       if(changed){
-      	row.find('.string').html( hexArrayToString(obj.payload) );
+      	row.find('.string').html( hexArrayToString(packet.payload) );
       	row.find('.aid').css({backgroundColor:'lightblue'})
           			.animate({ backgroundColor:'#444' }, 1000);
       	}
       
     }else{
-      this.gridBody.prepend( renderRow(obj) );
+      this.gridBody.prepend( renderRow(packet) );
     }
  }
  
   // Bus status
-  if( obj.status ){
+  if( packet.status ){
     
-    var busDom = $('#channel-'+obj.channel.replace(/\s/g, '').toLowerCase());
+    var busDom = $('#channel-'+packet.channel.replace(/\s/g, '').toLowerCase());
     
     if(busDom.length < 1){
       // Add new
-      var newDom = getStatusFrag('channel-'+obj.channel.replace(/\s/g, '').toLowerCase(), obj.channel );
+      var newDom = getStatusFrag('channel-'+packet.channel.replace(/\s/g, '').toLowerCase(), packet.channel );
       $('.bus-status').append(newDom);
       $("[rel='tooltip']").tooltip();
     }
@@ -74,7 +65,7 @@ Logger.prototype.handleSerial = function(message) {
     var leds = busDom.find('.led');
     
     leds.each(function(index, value){
-      if( (1 << index) & parseInt(obj.status) ){
+      if( (1 << index) & parseInt(packet.status) ){
         $(value).addClass('on');
       }
     });

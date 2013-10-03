@@ -1,4 +1,19 @@
 <div class="container" id="logger">
+  
+  <div class="btn-toolbar">
+    <div class="btn-group">
+      <button class="btn btn-warning" ng-disabled="!portOpen" ng-class="{active:activeBusses[0]==true}" ng-click="toggleBus(0)">Bus 1</button>
+      <button class="btn btn-warning" ng-disabled="!portOpen" ng-class="{active:activeBusses[1]==true}" ng-click="toggleBus(1)">Bus 2</button>
+      <button class="btn btn-warning" ng-disabled="!portOpen" ng-class="{active:activeBusses[2]==true}" ng-click="toggleBus(2)">Bus 3</button>
+    </div>
+    
+    <button class="btn" ng-class="{active:logMode == 1, 'btn-success':logMode, 'btn-danger':logMode>1}" ng-disabled="!portOpen" ng-click="sendLogSettings()">
+      {{ logMode > 0 ? "Log On" : "Log Off" }}
+    </button>
+    <input id="pid-filter" type="text" ng-hide="!logMode" ng-model="logFilter" placeholder="PID" style="width: 55px;"/>
+
+  </div>
+
   <table id="main-grid" logger>
     <thead>
       <tr id="header">
@@ -23,9 +38,4 @@
   <div class="bus-status clearfix">
   </div>
   
-  <div id="send-hex">
-    <small>Send Hex</small>
-    <input id="sendString", type="text", placeholder="Input Hex"/>
-    <button value="Send", ng-click="sendString()", class="btn">Send</button>
-  </div>
 </div>

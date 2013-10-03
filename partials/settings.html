@@ -1,1 +1,15 @@
-<h1>Status</h1>
+<div ng-init="init()">
+  <h1>Settings</h1>
+  <button class="btn btn-warning" ng-click="loadEeprom()">Load Eeprom</button>
+  <button class="btn btn-success" ng-click="resetStockCmd()">Reset eeprom</button>
+  
+  <button class="btn btn-success" ng-click="dbg()">Dump eprom struct</button>
+  
+  <button class="btn btn-success" ng-click="sendEeprom()">Write Settings</button>
+  
+  <input type="text" ng-model="pids[0].name[0]"/>
+  
+  <div ng-repeat="pid in pids">
+    <span>{{ getName(pid) }}</span>
+  </div>
+</div>
