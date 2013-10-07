@@ -1,5 +1,5 @@
 <div class="container" id="logger">
-  
+  <h2>Packet Logging</h2>
   <div class="btn-toolbar">
     <div class="btn-group">
       <button class="btn btn-warning" ng-disabled="!portOpen" ng-class="{active:activeBusses[0]==true}" ng-click="toggleBus(0)">Bus 1</button>
@@ -7,10 +7,10 @@
       <button class="btn btn-warning" ng-disabled="!portOpen" ng-class="{active:activeBusses[2]==true}" ng-click="toggleBus(2)">Bus 3</button>
     </div>
     
-    <button class="btn" ng-class="{active:logMode == 1, 'btn-success':logMode, 'btn-danger':logMode>1}" ng-disabled="!portOpen" ng-click="sendLogSettings()">
-      {{ logMode > 0 ? "Log On" : "Log Off" }}
-    </button>
-    <input id="pid-filter" type="text" ng-hide="!logMode" ng-model="logFilter" placeholder="PID" style="width: 55px;"/>
+    <div class="btn-group input-group log-filter-controls">
+      <button class="btn" ng-class="{active:logMode == 1, 'btn-success':logMode, 'btn-danger':logMode>1}" ng-disabled="!portOpen" ng-click="sendLogSettings()">{{ logMode > 0 ? "Log On" : "Log Off" }}</button>
+      <input id="pid-filter" type="text" ng-disabled="!logMode" ng-model="logFilter" placeholder="PID" class="form-control"/>
+    </div>
 
   </div>
 

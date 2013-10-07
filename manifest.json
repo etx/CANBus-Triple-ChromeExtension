@@ -1,7 +1,7 @@
 {
-  "name": "CANBus Triple Logger",
-  "description": "CANBus Triple Logger",
-  "version": "0.1",
+  "name": "CANBus Triple",
+  "description": "CANBus Triple",
+  "version": "0.2.0",
   "app": {
     "background": {
       "scripts": ["background.js"]

@@ -3,7 +3,7 @@
 
 /* Controllers */
 
-function AppCtrl($scope, $http, $location, ChromeSerial) {
+function AppCtrl($scope, $http, $location, ChromeSerial, $timeout) {
   
   var theSelectedPort;
   
@@ -51,6 +51,11 @@ function AppCtrl($scope, $http, $location, ChromeSerial) {
     $scope.portOpen = false;
     $scope.$apply();
   });
+  $scope.$on('chromeSerialTimeout', function(){
+    console.log("chrome serial timed out");
+    $scope.portOpen = false;
+    $scope.$apply();
+  });
   
   
   $scope.loadPorts = function(){
@@ -86,6 +91,10 @@ function AppCtrl($scope, $http, $location, ChromeSerial) {
         ChromeSerial.open(theSelectedPort, {'bitrate':57600});
       }
       
+  }
+  
+  $scope.resetHardware = function(){
+    ChromeSerial.resetHardware($scope.selectedPort);
   }
 
   
@@ -162,6 +171,14 @@ function LoggerCtrl($scope, $rootScope, ChromeSerial, flash){
 
 function SettingsCtrl($scope, ChromeSerial, CBTSettings){
   
+  $scope.alerts = [
+  ];
+  
+  $scope.closeAlert = function(index) {
+    $scope.alerts.splice(index, 1);
+    $scope.$apply();
+  };
+  
   $scope.resetStockCmd = function(){
     ChromeSerial.command([0x01, 0x04]);
   }
@@ -177,12 +194,23 @@ function SettingsCtrl($scope, ChromeSerial, CBTSettings){
   $scope.sendEeprom = function(){
     CBTSettings.sendEeprom();
   }
-  
-  $scope.getName = function(pid){
-    return String.fromCharCode.apply(null, pid.name);
-  }
-  
+
   $scope.pids = CBTSettings.pids;
+  
+  
+  $scope.$on('chromeSerialOpen', function(){
+    $scope.init();
+  });
+  
+  $scope.$on("cbt-event", function(event, data){
+    switch(data.event){
+      case 'eepromSave':
+        // Show saved message
+        $scope.alerts.push({msg: "Settings Saved", type:'success'});
+        $scope.$apply();
+      break;
+    }
+  });
   
   
 }

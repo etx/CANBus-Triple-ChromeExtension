@@ -1,15 +1,14 @@
-<div ng-init="init()">
-  <h1>Settings</h1>
-  <button class="btn btn-warning" ng-click="loadEeprom()">Load Eeprom</button>
-  <button class="btn btn-success" ng-click="resetStockCmd()">Reset eeprom</button>
+<div ng-init="init()" class="container">
+  <h2>Settings</h2>
   
-  <button class="btn btn-success" ng-click="dbg()">Dump eprom struct</button>
+  <alert ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)" class="fade-animation">{{alert.msg}}</alert>
   
-  <button class="btn btn-success" ng-click="sendEeprom()">Write Settings</button>
+  <button class="btn btn-warning" ng-click="init()">Reload Settings</button>
+  <button class="btn btn-success" ng-click="resetStockCmd()">Factory Reset Settings</button>
+  <!-- <button class="btn btn-success" ng-click="dbg()">Dump eprom struct</button> -->
+  <button class="btn btn-success" ng-click="sendEeprom()">Save to CANBus Triple</button>
+  <button class="btn btn-success" ng-click="resetHardware()"><i class="icon-refresh"/></button> 
   
-  <input type="text" ng-model="pids[0].name[0]"/>
+  <pid-editor/>
   
-  <div ng-repeat="pid in pids">
-    <span>{{ getName(pid) }}</span>
-  </div>
 </div>

@@ -6,7 +6,9 @@
     <script src="js/lib/jquery.color.js"></script>
     <script src="js/lib/jquery.tablesorter.min.js"></script>
     <script src="js/lib/angular.min.js"></script>
-    <script src="js/lib/bootstrap.min.js"></script>
+    <script src="js/lib/angular-route.min.js"></script>
+    <script src="js/lib/angular-animate.min.js"></script>
+    <!-- <script src="js/lib/bootstrap.min.js"></script> -->
     <script src="js/logger.js"></script>
     <script src="js/filters.js"></script>
     <script src="js/directives.js"></script>
@@ -14,54 +16,50 @@
     <script src="js/controllers.js"></script>
     <script src="js/app.js"></script>
     <script src="js/lib/angular-flash.min.js"></script>
+    <script src="js/lib/ui-bootstrap-tpls-0.6.0.min.js"></script>
     <link rel="stylesheet" href="type/exo/stylesheet.css"/>
     <link rel="stylesheet" href="css/bootstrap.min.css"/>
     <link rel="stylesheet" href="css/font-awesome.min.css"/>
     <link rel="stylesheet" href="css/style.css"/>
   </head>
   <body id="page-{{pagename() || 'logger'}}">
-    <div class="navbar">
-      <div class="navbar-inner">
-        <a class="brand" href="/"></a>
-        <ul class="nav">
-          <li ng-class="{active: currentPath() == '/'}">
-            <a href="#" target="_blank" ng-click="navigate('/logger')">Logger</a>
-          </li>
-          <li ng-class="{active: currentPath() == '/diag'}">
-            <a href="#" target="_blank" ng-click="navigate('/diag')">Diagnostics</a>
-          </li>
-          <li ng-class="{active: currentPath() == '/settings'}">
-            <a href="#" target="_blank" ng-click="navigate('/settings')">Settings</a>
+    <div class="navbar navbar-default">   
+      <a class="navbar-brand"></a>
+      <ul class="nav navbar-nav">
+        <li ng-class="{active: currentPath() == '/'}">
+          <a href="#" target="_blank" ng-click="navigate('/logger')">Logger</a>
+        </li>
+        <li ng-class="{active: currentPath() == '/diag'}">
+          <a href="#" target="_blank" ng-click="navigate('/diag')">Diagnostics</a>
+        </li>
+        <li ng-class="{active: currentPath() == '/settings'}">
+          <a href="#" target="_blank" ng-click="navigate('/settings')">Settings</a>
+        </li>
+      </ul>
+      <div class="btn-group pull-right port-select">
+        <button id="connect-button" class="btn fontawesome" ng-click="portToggle()" ng-class="{'btn-danger': !portOpen, 'btn-success': portOpen}"><i class="icon-off"></i>&nbsp&nbsp{{ portOpen ? "Connected" : "Disconnected" }}</button>
+        <button class="btn" data-toggle="dropdown" ng-disabled="portOpen">{{ selectedPort || "Select Serial Port"}}</button>
+        <button class="btn dropdown-toggle" data-toggle="dropdown" ng-click="loadPorts()" ng-disabled="portOpen">
+          <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu">
+          <li ng-repeat="p in ports">
+            <a ng-click="setPort(p)">{{p}}</a>
           </li>
         </ul>
-        
-        <!--<button class="btn pull-right" ng-click="loadPorts()"><i class="icon-repeat"></i></button>-->
-        <div class="btn-group pull-right port-select">
-          <button id="connect-button" class="btn fontawesome" ng-click="portToggle()" ng-class="{'btn-danger': !portOpen, 'btn-success': portOpen}"><i class="icon-off"></i>&nbsp&nbsp{{ portOpen ? "Connected" : "Disconnected" }}</button>
-          <button class="btn" data-toggle="dropdown" ng-disabled="portOpen">{{ selectedPort || "Select Serial Port"}}</button>
-          <button class="btn dropdown-toggle" data-toggle="dropdown" ng-click="loadPorts()" ng-disabled="portOpen">
-            <span class="caret"></span>
-          </button>
-          <ul class="dropdown-menu">
-            <li ng-repeat="p in ports">
-              <a ng-click="setPort(p)">{{p}}</a>
-            </li>
-          </ul>
-          <div flash-alert active-class="in" class="alert fade">
-            <span class="alert-message">
-              <p>{{flash.message}}</p>
-            </span>
-          </div>
+        <div flash-alert active-class="in" class="alert connection-alert fade">
+          <span class="alert-message">
+            <p>{{flash.message}}</p>
+          </span>
         </div>
-        
       </div>
     </div>
-    <div class="container">
-      <!--
-      <button class="btn" ng-click="testButton()">Button</button>
-      -->
-      <div ng-controller="IndexCtrl" ng-view></div>
-    </div>
     
+    <div class="main-container">
+      <div ng-controller="IndexCtrl" class="zoom-animation" ng-view></div>
+    </div>
+
   </body>
 </html>
+
+

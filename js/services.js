@@ -8,7 +8,7 @@ angular.module('canbusApp.services', []).
 
 
 angular.module('canbusApp.services', [])
-  .factory('ChromeSerial', function ($rootScope, $q){
+  .factory('ChromeSerial', function ($rootScope, $q, $timeout){
     
     var portName;
     var readEnabled = false;
@@ -17,8 +17,85 @@ angular.module('canbusApp.services', [])
     var charBuffer = "";
     var portOpen = false;
     var cbtFound = false;
+    var lastPortName;
+    
+    
+    var openSerial = function(name, opts){
+        
+        lastPortName = name;
+        
+        var deferred = $q.defer();
+        chrome.serial.open(name, opts, function(openInfo){
+          connectionId = openInfo.connectionId;
+          deferred.resolve(openInfo);
+          // set a read interval
+          readInterval = setInterval(readPort, 3);
+          portOpen = true;
+          readEnabled = true;
+          
+          // Send version command
+          $timeout(function(){
+            sendCommand([0x01, 0x01]);
+          }, 50);
+          
+        });
+        
+        $timeout( function(){
+          if(cbtFound == false){
+            deferred.reject(new Error("Serial port "+name+" timeout."));
+            $rootScope.$broadcast('chromeSerialTimeout', name);
+            closeSerial();
+          }
+        }, 200 );
+        
+        return deferred.promise;
+        
+      }
+      
+      
+    var closeSerial = function(){
+        
+        var deferred = $q.defer();
+        
+        if(connectionId !== undefined)
+          chrome.serial.close(connectionId, function(bool){
+            deferred.resolve(bool);
+            connectionId = undefined;
+            
+            portOpen = false;
+            cbtFound = false;
+            readEnabled = false;
+            clearInterval(readInterval);
+            $rootScope.$broadcast('chromeSerialClose');
+            
+          });
+        else
+          deferred.resolve(false);
+        
+        return deferred.promise;
+        
+      }
+      
+      
+    var writeSerial = function( data ){
+        var deferred = $q.defer();
+        if(connectionId !== undefined){
+          chrome.serial.write(connectionId, data, function(writeInfo){
+            deferred.resolve(writeInfo);
+          });
+        }else
+          deferred.resolve(false);
+        
+        return deferred.promise;
+      }
+    
     
     function sendCommand( command, payload ){
+      
+      if( !portOpen ){
+        $rootScope.$broadcast('chromeSerialCannotSend'); // TODO Handle this
+        return;
+        }
       
       if(!(command instanceof Array)) return;
       
@@ -65,6 +142,28 @@ angular.module('canbusApp.services', [])
       
       
     }
+    
+    
+    var reset = function(theSelectedPort){
+      
+      if(theSelectedPort == undefined)
+        theSelectedPort = lastPortName;
+      
+      closeSerial();
+    
+      $timeout(function(){
+        openSerial(theSelectedPort, {'bitrate':1200});
+        $timeout(function(){
+          closeSerial();
+          $timeout(function(){
+            console.log("reconnect");
+            openSerial(theSelectedPort, {'bitrate':57600});
+          }, 8000);
+        }, 30);
+      }, 30);
+
+    }
+    
     
     function readPort(){
       
@@ -133,64 +232,10 @@ angular.module('canbusApp.services', [])
         });
         return deferred.promise;
       },
-      
-      open: function(name, opts){
-        
-        var deferred = $q.defer();
-        chrome.serial.open(name, opts, function(openInfo){
-          connectionId = openInfo.connectionId;
-          deferred.resolve(openInfo);
-          // set a read interval
-          readInterval = setInterval(readPort, 3);
-          portOpen = true;
-          readEnabled = true;
-          
-          // Send version command
-          sendCommand([0x1, 0x01]);
-          
-        });
-        
-        /*
-        setTimeout( function(){
-          deferred.reject(new Error("Serial port "+name+" timeout."));
-        }, 500 );
-        */
-        return deferred.promise;
-        
-      },
-      close: function(){
-        
-        var deferred = $q.defer();
-        
-        if(connectionId !== undefined)
-          chrome.serial.close(connectionId, function(bool){
-            deferred.resolve(bool);
-            connectionId = undefined;
-            
-            portOpen = false;
-            cbtFound = false;
-            readEnabled = false;
-            clearInterval(readInterval);
-            $rootScope.$broadcast('chromeSerialClose');
-            
-          });
-        else
-          deferred.resolve(false);
-        
-        return deferred.promise;
-        
-      },
-      write: function( data ){
-        var deferred = $q.defer();
-        if(connectionId !== undefined){
-          chrome.serial.write(connectionId, data, function(writeInfo){
-            deferred.resolve(writeInfo);
-          });
-        }else
-          deferred.resolve(false);
-        
-        return deferred.promise;
-      },
+      resetHardware: reset,
+      open: openSerial,
+      close: closeSerial,
+      write: writeSerial,
       command: function( data ){
         // sendCommand(data);
         sendCommand.apply(this, arguments);
@@ -249,6 +294,62 @@ angular.module('canbusApp.services', [])
     // var padding = new Uint8Array(eepromBuffer, 40, 32);
     
     
+    /*
+    *   Human readable object of PIDs for view rendering.
+    */                 
+    var managedPids = [];
+    for(var i=0; i<pids.length; i++)
+      managedPids.push({ busId:0,
+                        settings: [],
+                        value: 0,
+                        txd: 'txddd',
+                        rxf: 'rxfff',
+                        rxd: 'rxddd',
+                        mth: 'math',
+                        name: 'Name'
+                      });
+    
+    /*
+    *   Convert eeprom buffer to managed pid object
+    */                 
+    var updateManagedPids = function(){
+      
+      managedPids.forEach(function(element, index, array){
+        element.busId = pids[index].busId[0];
+        element.settings = pids[index].settings[0];
+        // element.value = (pids[index].value[1] << 8) + pids[index].value[0];
+        element.value = Util.byteArrayToHex(pids[index].value).toUpperCase();
+        element.txd = Util.byteArrayToHex(pids[index].txd).toUpperCase();
+        element.rxf = Util.byteArrayToHex(pids[index].rxf).toUpperCase();
+        element.rxd = Util.byteArrayToHex(pids[index].rxd).toUpperCase();
+        element.mth = Util.byteArrayToHex(pids[index].mth).toUpperCase();
+        element.name = Util.byteArrayToString(pids[index].name); 
+      });
+      
+    }
+    
+    /*
+    *   Convert eeprom buffer to managed pid object
+    */
+    var updateEepromPids = function(){
+      
+      managedPids.forEach(function(element, index, array){
+        pids[index].busId.clear().set( [element.busId] );
+        // pids[index].settings.set();
+        pids[index].value.clear().set( Util.hexToByteArray( element.value ) );
+        pids[index].txd.clear().set( Util.hexToByteArray( element.txd ) );
+        pids[index].rxf.clear().set( Util.hexToByteArray( element.rxf ) );
+        pids[index].rxd.clear().set( Util.hexToByteArray( element.rxd ) );
+        pids[index].mth.clear().set( Util.hexToByteArray( element.mth ) );
+        pids[index].name.clear().set( Util.stringToByteArray( element.name ) );
+        
+      });
+      
+    }
+    
+    /*
+    *   Events
+    */
     $rootScope.$on("cbt-event", handleDataEvent);
     
     function handleDataEvent(event, data){
@@ -260,11 +361,13 @@ angular.module('canbusApp.services', [])
             eepromView[index] = parseInt(element, 16);
           });
           
+          updateManagedPids();
           $rootScope.$apply();
           
         break;
         case 'eepromSave':
           console.log(data);
+          ChromeSerial.resetHardware();
         break;
         case 'eepromData':
           console.log(data);
@@ -275,7 +378,7 @@ angular.module('canbusApp.services', [])
 
     
     return {
-      pids: pids,
+      pids: managedPids,
       load: function(){
         // Ask for eeprom
         ChromeSerial.command([0x01, 0x02]);
@@ -284,6 +387,7 @@ angular.module('canbusApp.services', [])
         console.log( pids );
       },
       sendEeprom: function(){
+        updateEepromPids();
         ChromeSerial.command([0x01, 0x03] , eepromBuffer );
       }
     }

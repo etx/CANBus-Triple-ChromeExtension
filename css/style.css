@@ -1,14 +1,18 @@
 html, body {
-  /* background: linear-gradient(to bottom, rgba(51,51,51,1) 1%,rgba(54,54,54,1) 100%); */
-  background: #333;
+  background: #f9f9f9;
+  background: linear-gradient(to bottom, rgba(255,255,255,1) 1%,rgba(245,245,245,1) 100%); */
+  background-attachment: fixed;
+  background-repeat: no-repeat;
 	margin: 0;
 	padding: 0;
-	font-family: 'ExoMedium', 'Arial', sans-serif;
+	/* font-family: 'ExoMedium', 'Arial', sans-serif; */
 	color: #aaa;
+  display: inline-block;
 	height: 100%;
 	width: 100%;
 	overflow: visible;
 }
+
 
 .fontawesome {
   font-family: "FontAwesome";
@@ -36,7 +40,7 @@ th, td{
 	text-align: left;
 }
 
-a.brand {
+a.navbar-brand {
   padding-left: 52px !important;
   background: transparent url(../img/logo.png) no-repeat 6px center;
   background-size: contain;
@@ -45,45 +49,59 @@ a.brand {
   min-width: 46px;
 }
 
-.navbar .nav>li>a {
+.navbar .navbar-nav>li>a {
   text-transform: uppercase;
   padding-top: 14px !important;
 }
 
-.navbar-inner {
+.navbar {
   padding: 6px;
   border-radius: 0;
   margin-top: -1px;
+  margin-bottom: 0;
+  background: white;
+  min-height: 10%;
 }
 
-.navbar .brand {
+.navbar .navbar-brand {
   margin: 0;
 }
 .container {
-
+  margin: 0 2% !important;
+  max-width: 100% !important;
+  -webkit-transition:0.6s ease-out all;
 }
 
 .port-select .alert {
   position: absolute;
   font-size: 22px;
   max-width: 100%;
+  top: 1.5em;
 }
 
 
 .alert {
-  margin-top: 4px;
-  padding-top: 18px;
-  opacity: 0;
   -webkit-transition: opacity 0.25s, -webkit-transform 2s;
   transition: opacity 0.25s, -webkit-transform 2s;
+  box-shadow: 1px 2px 9px black;
 }
 
 .alert.in {
   opacity: 1;
 }
 
+.connection-alert {
+  margin-top: 4px;
+  padding-top: 18px;
+  opacity: 0;
+}
+
+
 .port-select {
   margin-right: 8px;
+  margin-top: 4px;
+  display: inline-block;
+  min-width: 26em;
 }
 
 #send-hex {
@@ -118,3 +136,156 @@ a.brand {
 .bus .led.on {
   background-color: red;
 }
+
+
+.log-filter-controls input[type="text"] {
+  width: 6em;
+}
+
+.bevel-shadow {
+  box-shadow: 0 1px 0 #CCC,
+      				0 2px 0 #C9C9C9, 
+      				0 3px 0 #BBB, 
+      				0 4px 0 #B9B9B9, 
+      				0 5px 0 #AAA, 
+      				0 6px 1px rgba(0, 0, 0, .1), 
+      				0 0 5px rgba(0, 0, 0, .1), 
+      				0 1px 3px rgba(0, 0, 0, .3), 
+      				0 3px 5px rgba(0, 0, 0, .2), 
+      				0 5px 10px rgba(0, 0, 0, .25), 
+      				0 10px 10px rgba(0, 0, 0, .2), 
+      				0 20px 20px rgba(0, 0, 0, .15);
+}
+
+
+/* Settings */
+
+
+.pids {
+  display: -webkit-flex;
+  -webkit-flex-direction: row;
+  display: flex;
+  flex-direction: row;
+  margin-top: 22px;
+}
+
+.pid-object {
+  border-radius: 4px;
+  -webkit-flex: 1 1 auto;
+  flex: 1 1 auto;
+  min-height: 3em;
+  display: block;
+  margin: 0 6px 0px 6px;
+  padding: 0.8em;
+  background: #f2f2f2;
+}
+
+
+.pids h3 {
+  background-color: #aaa;
+  color: white;
+  margin-top: 0;
+}
+
+.pid-form {
+  margin: 0 auto;
+}
+
+.pid-form input {
+  border: none;
+  border-bottom: 1px solid #ccc;
+  padding: 3px;
+  width: 78%;
+}
+
+
+.pid-form label, 
+.pid-form input {
+    display: inline-block;
+    vertical-align: baseline;
+}
+
+.pid-form label {
+    width: 20%;
+    margin-right: 2%;
+}
+
+.pid-form form, 
+.pid-form input {
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}
+
+/*
+  Main section animation
+*/
+
+.main-container {
+  position: relative;
+  overflow: hidden;
+  min-height: 90%;
+  min-width: 100%;
+  
+}
+
+.zoom-animation.ng-enter, .zoom-animation.ng-leave {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  -webkit-transform: scale(1);
+}
+
+.zoom-animation.ng-enter {
+  z-index: 1000;
+  max-height: 100%;
+  -webkit-transition:0.6s ease-out all;
+  -webkit-transform: scale(1.5);
+  opacity:0;
+}
+.zoom-animation.ng-enter.ng-enter-active {
+  -webkit-transform: scale(1);
+  opacity:1;
+}
+
+.zoom-animation.ng-leave {
+  z-index: 900;
+  -webkit-transition:0.6s ease-in all;
+  -webkit-transform: scale(1);
+  opacity:1;
+}
+.zoom-animation.ng-leave.ng-leave-active {
+  -webkit-transform: scale(0.5);
+  opacity:0;
+}
+
+
+/*
+*   Fade animation
+*/
+
+.fade-animation.ng-enter, .fade-animation.ng-leave {
+  -webkit-transition:0.6s ease-out all;
+}
+
+.fade-animation.ng-enter {
+  opacity:0;
+}
+.fade-animation.ng-enter.ng-enter-active {
+  opacity:1;
+}
+
+.fade-animation.ng-leave {
+  opacity:1;
+}
+.fade-animation.ng-leave.ng-leave-active {
+  opacity:0;
+}
+
+
+
+
+
+
+
