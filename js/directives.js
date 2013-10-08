@@ -29,9 +29,9 @@ angular.module('canbusApp.directives', []).
     
     return {
       restrict: 'E',
-      template: '<section class="pids" ng-repeat="pids in pidRows">'+
+      template: '<section><div ui-sortable ng-model="CBTSettings.pids" class="pids" ng-repeat="pids in pidRows">'+
                   '<pid-object ng-repeat="pid in pids" class="pid-object bevel-shadow" index="$index" pid="pid"/>'+
-                '</section>',
+                '</div></section>',
       link: function (scope, elem, attrs) {
         
         scope.pidRows = [];
@@ -44,7 +44,6 @@ angular.module('canbusApp.directives', []).
         
       },
       scope: {
-        
       }
     }
     

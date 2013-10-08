@@ -188,7 +188,8 @@ function SettingsCtrl($scope, ChromeSerial, CBTSettings){
   }
   
   $scope.dbg = function(){
-    CBTSettings.debugEeprom();
+    /* CBTSettings.debugEeprom(); */
+    console.log( CBTSettings.pids );
   }
   
   $scope.sendEeprom = function(){

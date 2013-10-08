@@ -2,7 +2,8 @@
 
 
 // Declare app level module which depends on filters, and services
-angular.module('canbusApp', ['ngRoute', 'ngAnimate', 'canbusApp.filters', 'canbusApp.services', 'canbusApp.directives', 
+angular.module('canbusApp', ['ngRoute', 'ngAnimate', 'ui.sortable',
+                             'canbusApp.filters', 'canbusApp.services', 'canbusApp.directives', 
                              'ui.bootstrap', 'angular-flash.service', 'angular-flash.flash-alert-directive']).
   config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
     
