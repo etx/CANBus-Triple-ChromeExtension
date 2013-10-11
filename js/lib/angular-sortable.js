@@ -46,11 +46,13 @@ angular.module('ui.sortable', [])
               };
 
               callbacks.start = function(e, ui) {
+                // $(ui.placeholder).hide(300);
                 // Save position of dragged item
                 ui.item.sortable = { index: ui.item.index() };
               };
 
               callbacks.update = function(e, ui) {
+                // $(ui.placeholder).hide().show(300);
                 // For some reason the reference to ngModel in stop() is wrong
                 ui.item.sortable.resort = ngModel;
               };

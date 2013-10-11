@@ -267,8 +267,8 @@ angular.module('canbusApp.services', [])
     // EEPROM Struct
     var displayEnabled = new Uint8Array(eepromBuffer, 0, 1);
     var firstboot = new Uint8Array(eepromBuffer, 1, 1);;
+    var displayIndex = new Uint8Array(eepromBuffer, 2, 1);
     /*
-    var placeholder2 = new Uint8Array(eepromBuffer, 2, 1);
     var placeholder3 = new Uint8Array(eepromBuffer, 3, 1);
     var placeholder4 = new Uint8Array(eepromBuffer, 4, 1);
     var placeholder5 = new Uint8Array(eepromBuffer, 5, 1);

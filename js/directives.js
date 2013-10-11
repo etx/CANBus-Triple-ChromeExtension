@@ -29,11 +29,12 @@ angular.module('canbusApp.directives', []).
     
     return {
       restrict: 'E',
-      template: '<section><div ui-sortable ng-model="CBTSettings.pids" class="pids" ng-repeat="pids in pidRows">'+
+      template: '<section ui-sortable="{tolerance:100}" ng-model="pids" class="pids">'+
                   '<pid-object ng-repeat="pid in pids" class="pid-object bevel-shadow" index="$index" pid="pid"/>'+
-                '</div></section>',
+                '</section>',
       link: function (scope, elem, attrs) {
         
+        /*
         scope.pidRows = [];
         var columns = 4;
         for( var i=0; i<CBTSettings.pids.length; i+=columns )
@@ -41,9 +42,11 @@ angular.module('canbusApp.directives', []).
         
         if( i < CBTSettings.pids.length && CBTSettings.pids.length-i < columns)
           scope.pidRows.push( CBTSettings.pids.slice( i, CBTSettings.pids.length ) );
+          */
         
       },
       scope: {
+        pids: "="
       }
     }
     

@@ -68,8 +68,8 @@ a.navbar-brand {
 }
 .container {
   margin: 0 2% !important;
+  padding-top: 2em;
   max-width: 100% !important;
-  -webkit-transition:0.6s ease-out all;
 }
 
 .port-select .alert {
@@ -162,23 +162,34 @@ a.navbar-brand {
 
 
 .pids {
-  display: -webkit-flex;
-  -webkit-flex-direction: row;
-  display: flex;
-  flex-direction: row;
-  margin-top: 22px;
+  margin: 22px -1% 0 -1%;
+  width: 100%;
+  -webkit-transition: 0.6s ease-out all;
 }
 
 .pid-object {
   border-radius: 4px;
-  -webkit-flex: 1 1 auto;
-  flex: 1 1 auto;
   min-height: 3em;
+  width: 23%;
   display: block;
-  margin: 0 6px 0px 6px;
+  margin: 0 1% 2% 1%;
   padding: 0.8em;
   background: #f2f2f2;
+  float: left;
 }
+
+/*
+.pid-object:first-child,
+.pid-object:nth-child(5),
+.pid-object:nth-child(9),
+.pid-object:nth-child(13){
+  margin-left: 0;
+}
+
+.pid-object:last-child {
+  margin-right: 0;
+}
+*/
 
 
 .pids h3 {
@@ -226,7 +237,6 @@ a.navbar-brand {
   overflow: hidden;
   min-height: 90%;
   min-width: 100%;
-  
 }
 
 .zoom-animation.ng-enter, .zoom-animation.ng-leave {

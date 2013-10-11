@@ -1,6 +1,5 @@
 <div ng-init="init()" class="container">
-  <h2>Settings</h2>
-  
+
   <alert ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)" class="fade-animation">{{alert.msg}}</alert>
   
   <button class="btn btn-warning" ng-click="init()">Reload Settings</button>
@@ -9,6 +8,7 @@
   <button class="btn btn-success" ng-click="sendEeprom()">Save to CANBus Triple</button>
   <button class="btn btn-success" ng-click="resetHardware()"><i class="icon-refresh"/></button> 
   
-  <pid-editor/>
+  <pid-editor pids="pids"/>
+  <div class="clearfix"></div>
   
 </div>
