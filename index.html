@@ -33,14 +33,16 @@
     <div class="navbar navbar-default">   
       <a class="navbar-brand"></a>
       <ul class="nav navbar-nav">
-        <li ng-class="{active: currentPath() == '/'}">
-          <a href="#" target="_blank" ng-click="navigate('/logger')">Logger</a>
-        </li>
-        <li ng-class="{active: currentPath() == '/diag'}">
+        <!--
+<li ng-class="{active: currentPath() == '/diag'}">
           <a href="#" target="_blank" ng-click="navigate('/diag')">Diagnostics</a>
         </li>
+-->
         <li ng-class="{active: currentPath() == '/settings'}">
           <a href="#" target="_blank" ng-click="navigate('/settings')">Settings</a>
+        </li>
+        <li ng-class="{active: currentPath() == '/logger'}">
+          <a href="#" target="_blank" ng-click="navigate('/logger')">Logger</a>
         </li>
       </ul>
       <div class="btn-group pull-right port-select">

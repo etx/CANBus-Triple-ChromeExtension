@@ -8,7 +8,7 @@ angular.module('canbusApp', ['ngRoute', 'ngAnimate', 'ui.sortable',
   config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
     
     $routeProvider.
-      when('/', {
+      when('/logger', {
         templateUrl: 'partials/logger.html',
         controller: LoggerCtrl
         }).
@@ -20,7 +20,7 @@ angular.module('canbusApp', ['ngRoute', 'ngAnimate', 'ui.sortable',
         templateUrl: 'partials/settings.html',
         controller: SettingsCtrl
         }).
-      otherwise({redirectTo: '/'});
+      otherwise({redirectTo: '/settings'});
     
     // $locationProvider.html5Mode(true);
     
