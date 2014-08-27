@@ -1,3 +1,5 @@
+# Deprecated
+
 CANBus-Triple-ChromeExtension
 =============================
 
